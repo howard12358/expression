@@ -181,3 +181,7 @@ h3 {
   border-radius: 2px;
   color: var(--vp-c-text-1);
 }
+
+p img {
+  margin: 0px auto;
+}
