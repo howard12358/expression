@@ -1,5 +1,6 @@
 ---
 page: true
+title: 
 aside: false
 ---
 <script setup>
