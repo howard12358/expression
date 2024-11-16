@@ -1,50 +1,51 @@
-import { defineConfig } from 'vitepress'
-import { getPosts } from './theme/serverUtils'
+import {defineConfig} from 'vitepress'
+import {getPosts} from './theme/serverUtils'
 
 //每页的文章数量
 const pageSize = 10
 
 export default defineConfig({
-    title: 'Vitepress blog',
-    base: '/',
-    cacheDir: './node_modules/vitepress_cache',
-    description: 'vitepress,blog,thoughts',
-    ignoreDeadLinks: true,
-    themeConfig: {
-        posts: await getPosts(pageSize),
-        website: 'https://github.com/weedsx/expression', //copyright link
-        // 评论的仓库地址
-        comment: {
-            repo: 'airene/vitepress-blog-pure',
-            themes: 'github-light',
-            issueTerm: 'pathname'
-        },
-        nav: [
-            { text: 'Home', link: '/' },
-            { text: 'Category', link: '/pages/category' },
-            { text: 'Archives', link: '/pages/archives' },
-            { text: 'Tags', link: '/pages/tags' },
-            { text: 'About', link: '/pages/about' }
-            // { text: 'Airene', link: 'http://airene.net' }  -- External link test
-        ],
-        search: {
-            provider: 'local',
-        },
-        //outline:[2,3],
-        outline:{
-            label:'文章摘要'
-        },
-        socialLinks: [{ icon: 'github', link: 'https://github.com/airene/vitepress-blog-pure' }]
-    } as any,
-    srcExclude: ['README.md'], // exclude the README.md , needn't to compiler
+  title: '衣戈猜想',
+  base: '/',
+  cacheDir: './node_modules/vitepress_cache',
+  description: 'vitepress,blog,thoughts',
+  ignoreDeadLinks: true,
+  themeConfig: {
+    posts: await getPosts(pageSize),
+    website: 'https://github.com/weedsx', //copyright link
+    // 评论的仓库地址
+    comment: {
+      repo: 'weedsx/expression',
+      themes: 'github-light',
+      issueTerm: 'pathname'
+    },
+    nav: [
+      {text: '主页', link: '/'},
+      {text: '主题', link: '/pages/category'},
+      {text: '时间线', link: '/pages/archives'},
+      {text: '标签', link: '/pages/tags'},
+      {text: '关于', link: '/pages/about'}
+      // { text: 'Airene', link: 'http://airene.net' }  -- External link test
+    ],
+    search: {
+      provider: 'local',
+    },
+    //outline:[2,3],
+    outline: {
+      label: '目录',
 
-    vite: {
-        //build: { minify: false }
-        server: { port: 5000 }
+    },
+    socialLinks: [{icon: 'github', link: 'https://github.com/weedsx/expression'}]
+  } as any,
+  srcExclude: ['README.md'], // exclude the README.md , needn't to compiler
+
+  vite: {
+    //build: { minify: false }
+    server: {port: 5000}
+  }
+  /*
+    optimizeDeps: {
+        keepNames: true
     }
-    /*
-      optimizeDeps: {
-          keepNames: true
-      }
-      */
+    */
 })
