@@ -42,7 +42,8 @@ export default defineConfig({
   vite: {
     //build: { minify: false }
     server: {port: 5000}
-  }
+  },
+  cleanUrls: true
   /*
     optimizeDeps: {
         keepNames: true
