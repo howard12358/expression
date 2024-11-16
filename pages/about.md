@@ -9,15 +9,9 @@ aside: false
 
 ---
 
--   👋 Hi, I'm [ your name ]
--   🚀️ I'm currently working as [ your position ]
--   📮️ How to reach me: [your Github](https://github.com)
--   📖 My motto: [ your motto ]
+-   Hey, folks! 👋
 
 ---
-
-> [!tip]
-> 在以下内容当中，挑选您熟悉的 `icon` 进行展示
 
 ### 后端
 
@@ -109,3 +103,7 @@ aside: false
   <img src="https://img.shields.io/badge/-Android%20Studio-C0C0C0?logo=Android-Studio&logoColor=3DDC84" alt="Android Studio" style="display: inline-block;" />&nbsp;
 </p>
 
+> [!tip]
+> 精通以上技术...
+> 
+> 单词的拼写
