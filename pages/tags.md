@@ -1,6 +1,6 @@
 ---
 page: true
-title: Tags
+title: 标签
 description: Tags
 aside: false
 ---

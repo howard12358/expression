@@ -1,6 +1,6 @@
 ---
 page: true
-title: home
+title: 首页
 aside: false
 ---
 <script setup>
