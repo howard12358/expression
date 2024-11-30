@@ -64,4 +64,12 @@ func main() {
 }
 ```
 
+## Rust
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
 <Comment />
