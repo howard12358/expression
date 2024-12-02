@@ -5,7 +5,7 @@ import {getPosts} from './theme/serverUtils'
 const pageSize = 10
 
 export default defineConfig({
-  title: '衣戈猜想',
+  title: '萧愚',
   base: '/',
   cacheDir: './node_modules/vitepress_cache',
   description: 'vitepress,blog,thoughts',
