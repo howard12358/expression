@@ -12,10 +12,10 @@ export default defineConfig({
   ignoreDeadLinks: true,
   themeConfig: {
     posts: await getPosts(pageSize),
-    website: 'https://github.com/weedsx', //copyright link
+    website: 'https://github.com/yige-howard', //copyright link
     // 评论的仓库地址
     comment: {
-      repo: 'weedsx/expression',
+      repo: 'yige-howard/expression',
       themes: 'github-light',
       issueTerm: 'pathname'
     },
@@ -35,7 +35,7 @@ export default defineConfig({
       label: '目录',
 
     },
-    socialLinks: [{icon: 'github', link: 'https://github.com/weedsx/expression'}]
+    socialLinks: [{icon: 'github', link: 'https://github.com/yige-howard/expression'}]
   } as any,
   srcExclude: ['README.md'], // exclude the README.md , needn't to compiler
 
