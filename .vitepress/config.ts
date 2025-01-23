@@ -5,17 +5,17 @@ import {getPosts} from './theme/serverUtils'
 const pageSize = 10
 
 export default defineConfig({
-  title: '萧Yu',
+  title: 'Howard',
   base: '/',
   cacheDir: './node_modules/vitepress_cache',
   description: 'vitepress,blog,thoughts',
   ignoreDeadLinks: true,
   themeConfig: {
     posts: await getPosts(pageSize),
-    website: 'https://github.com/yige-howard', //copyright link
+    website: 'https://github.com/howard-lew', //copyright link
     // 评论的仓库地址
     comment: {
-      repo: 'yige-howard/expression',
+      repo: 'howard-lew/expression',
       themes: 'github-light',
       issueTerm: 'pathname'
     },
@@ -35,7 +35,7 @@ export default defineConfig({
       label: '目录',
 
     },
-    socialLinks: [{icon: 'github', link: 'https://github.com/yige-howard/expression'}]
+    socialLinks: [{icon: 'github', link: 'https://github.com/howard-lew/expression'}]
   } as any,
   srcExclude: ['README.md'], // exclude the README.md , needn't to compiler
 
