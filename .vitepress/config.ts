@@ -12,7 +12,7 @@ export default defineConfig({
   ignoreDeadLinks: true,
   themeConfig: {
     posts: await getPosts(pageSize),
-    website: 'https://github.com/howard-lew', //copyright link
+    website: 'https://github.com/howard12358', //copyright link
     // 评论的仓库地址
     comment: {
       repo: 'howard-lew/expression',
@@ -35,7 +35,7 @@ export default defineConfig({
       label: '目录',
 
     },
-    socialLinks: [{icon: 'github', link: 'https://github.com/howard-lew/expression'}]
+    socialLinks: [{icon: 'github', link: 'https://github.com/howard12358/expression'}]
   } as any,
   srcExclude: ['README.md'], // exclude the README.md , needn't to compiler
 
