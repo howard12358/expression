@@ -15,7 +15,7 @@ export default defineConfig({
     website: 'https://github.com/howard12358', //copyright link
     // 评论的仓库地址
     comment: {
-      repo: 'howard-lew/expression',
+      repo: 'howard12358/expression',
       themes: 'github-light',
       issueTerm: 'pathname'
     },
