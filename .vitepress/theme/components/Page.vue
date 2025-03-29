@@ -1,6 +1,5 @@
 <template>
-  <div v-for="(article, index) in posts" :key="index" class="post-list"
-       v-show="!article.frontMatter.hide || article.frontMatter.hide === 'false'">
+  <div v-for="(article, index) in posts" :key="index" class="post-list">
 <!--  <div v-for="(article, index) in posts" :key="index" class="post-list" v-show="article.frontMatter.category !== '一个猜想'">-->
     <div class="post-header">
       <div class="post-title">

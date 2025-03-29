@@ -20,8 +20,14 @@ async function getPosts(pageSize: number) {
             }
         })
     )
-    posts.sort(_compareDate as any)
-    return posts
+
+    // 剔除元数据中包含 hide: true 的文章
+    const filteredPosts = posts.filter(post => {
+        return !post.frontMatter.hide;
+    });
+
+    filteredPosts.sort(_compareDate as any)
+    return filteredPosts
 }
 
 async function generatePaginationPages(total: number, pageSize: number) {
