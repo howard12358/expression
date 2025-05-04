@@ -4,10 +4,9 @@ dist
 dist-ssr
 *.local
 .idea
-pnpm-lock.yaml
 smartmontools.md
 zsh_history.md
-/index.md
+/*.md
 !/changelog.md
 /package-lock.json
 origin_theme.css
