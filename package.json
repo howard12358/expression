@@ -2,20 +2,34 @@
     "name": "expression",
     "version": "1.0.0",
     "description": "",
-    "main": "index.ts",
+    "main": "index.js",
     "scripts": {
         "dev": "vitepress dev --host 0.0.0.0",
-        "build": "vitepress build",
-        "preview": "vitepress preview"
+        "build": "cross-env NODE_ENV=production vitepress build",
+        "preview": "cross-env NODE_ENV=production vitepress preview"
     },
     "keywords": [],
     "author": "",
-    "type": "module",
     "license": "ISC",
+    "type": "module",
     "devDependencies": {
-        "vitepress": "^1.4.2",
-        "globby": "^14.0.2",
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^22.14.1",
+        "@typescript-eslint/eslint-plugin": "^8.31.0",
+        "@typescript-eslint/parser": "^8.31.0",
+        "@typescript-eslint/types": "^8.31.0",
+        "@vue/compiler-sfc": "^3.5.13",
+        "cross-env": "^7.0.3",
+        "eslint": "^9.25.1",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-prettier": "^5.2.6",
+        "eslint-plugin-vue": "^9.33.0",
+        "fs-extra": "^11.3.0",
+        "globby": "^14.1.0",
         "gray-matter": "^4.0.3",
-        "fs-extra": "^11.2.0"
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3",
+        "vitepress": "^1.6.3",
+        "vitepress-plugin-comment-with-giscus": "^1.1.15"
     }
 }

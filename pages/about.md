@@ -3,15 +3,10 @@ page: true
 title: 关于
 description: About me
 aside: false
+comment: false
 ---
 
-## 关于我
-
----
-
-- 我不会祝你过的快乐😆，我祝你活的真实😊👍
-
----
+## 技术栈
 
 <p>
   <img src="/img/header.png" align="center" alt="header">
@@ -110,3 +105,8 @@ aside: false
 > 精通以上技术...
 > 
 > 单词的拼写
+
+## 写在最后
+
+- 感谢你的阅读
+- 我不会祝你过的快乐，我祝你活的真实

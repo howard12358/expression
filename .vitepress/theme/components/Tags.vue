@@ -1,7 +1,7 @@
 <template>
     <div class="tags">
         <span @click="toggleTag(String(key))" v-for="(_, key) in data" class="tag">
-            {{ key }} <strong>{{ data[key].length }}</strong>
+            {{ key }} <sup>{{ data[key].length }}</sup>
         </span>
     </div>
     <div class="tag-header">{{ selectTag }}</div>
@@ -31,6 +31,11 @@ let selectTag = ref(params.get('tag') ? params.get('tag') : '')
 const toggleTag = (tag: string) => {
     selectTag.value = tag
 }
+// choose the first key
+const defaultDisplayTag = Object.keys(data.value)[0]
+if (defaultDisplayTag) {
+    toggleTag(defaultDisplayTag)
+}
 </script>
 
 <style scoped>
@@ -42,7 +47,7 @@ const toggleTag = (tag: string) => {
 
 .tag {
     display: inline-block;
-    padding: 4px 16px;
+    padding: 0 16px 4px 16px;
     margin: 6px 8px;
     font-size: 0.875rem;
     line-height: 25px;
@@ -53,22 +58,20 @@ const toggleTag = (tag: string) => {
     cursor: pointer;
 }
 
-.tag strong {
+.tag sup {
     color: var(--vp-c-brand);
+    font-weight: bold;
 }
 
 .tag-header {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin: 1rem 0;
-    text-align: left;
+    padding: 28px 0 10px 0;
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--bt-theme-title);
+    font-family: var(--date-font-family);
 }
 
 @media screen and (max-width: 768px) {
-    .tag-header {
-        font-size: 1.5rem;
-    }
-
     .date {
         font-size: 0.75rem;
     }
