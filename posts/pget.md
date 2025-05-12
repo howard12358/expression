@@ -12,7 +12,9 @@ description: pget，go 版本的 wget
 
 ## 使用
 
-```shell
+基于原版添加了代理功能，可以通过指定代理来下载文件 `pget -x http://127.0.0.1:7897 downloadUrl`
+
+```shell{10}
 Pget v1.0-2-gae9a8cf, The fastest file download client
 Usage: pget [options] URL
   Options:
@@ -27,8 +29,9 @@ Usage: pget [options] URL
   --trace                       display detail error messages
 ```
 
+**下载：**
 - 原版（无代理功能）：https://github.com/Code-Hex/pget
-- 有代理功能的版本：https://github.com/howard12358/pget
+- 有代理功能的版本：https://github.com/howard12358/pget ，其他版本请自行编译
 
 ## 设计
 
@@ -48,8 +51,9 @@ Usage: pget [options] URL
 
 ## 时序图
 
-![时序图](/img/pget时序图.png)
+<img src="/img/pget时序图.png" alt="时序图">
 
+::: details mermaid
 ```mermaid
 sequenceDiagram
     participant 用户
@@ -79,3 +83,4 @@ sequenceDiagram
     Download模块-->>CLI: 返回 nil (无错误)
     CLI-->>用户: 打印“下载完成，保存路径：./Filename”
 ```
+:::

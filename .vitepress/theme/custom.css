@@ -219,3 +219,7 @@ h3 {
     color: var(--vp-c-text-1);
 }
 
+img {
+    display: block;
+    margin: 0 auto;
+}
