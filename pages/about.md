@@ -3,7 +3,7 @@ page: true
 title: 关于
 description: About me
 aside: false
-comment: false
+comment: ture
 ---
 
 ## 技术栈
