@@ -12,7 +12,7 @@ description: pget，go 版本的 wget
 
 ## 使用
 
-基于原版添加了代理功能，可以通过指定代理来下载文件 `pget -x http://127.0.0.1:7897 downloadUrl`
+基于原版添加了代理功能，可以通过指定代理来下载文件 `pget -x http://127.0.0.1:7897 URL`
 
 ```shell{10}
 Pget v1.0-2-gae9a8cf, The fastest file download client
