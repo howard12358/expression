@@ -53,7 +53,7 @@ Usage: pget [options] URL
 
 ![时序图](/img/pget时序图.png)
 
-::: details mermaid
+::: details mermaid 时序图
 ```mermaid
 sequenceDiagram
     participant 用户
