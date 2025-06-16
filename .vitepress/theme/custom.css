@@ -219,7 +219,23 @@ h3 {
     color: var(--vp-c-text-1);
 }
 
+/*img {*/
+/*    display: block;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/* 限制正文内图片的最大宽度，并且自动等比缩放 */
+/*img {*/
+/*    display: block; !* 把图片当块级元素，方便居中 *!*/
+/*    max-width: 600px; !* 根据你的内容宽度选一个合适的值 *!*/
+/*    width: 100%; !* 当容器小于 max-width 时自动缩小 *!*/
+/*    height: auto; !* 等比缩放 *!*/
+/*    margin: 1.2em auto; !* 上下留白，水平居中 *!*/
+/*}*/
+
 img {
-    display: block;
-    margin: 0 auto;
+    display: block; /* 块级，方便居中 */
+    margin: 1.5em auto; /* 上下留白，左右居中 */
+    max-width: min(550px, 100%); /* 不会超过 600px，也不会溢出容器 */
+    height: auto; /* 等比缩放 */
 }
