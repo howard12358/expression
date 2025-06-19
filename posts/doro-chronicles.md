@@ -13,7 +13,7 @@ description: '对于角色的无限解释权是一项多么可怕又残忍的游
 
 当 doro 的热度如潮水般褪去，没人会继续在意这只粉毛小狗。最近你一定看到过很多以 doro 为主角的伤痛文学作品，就是这个粉色的小家伙带来的却是一个互联网抽象史上独一无二的奇迹。
 
-![doro](/doro-chronicles/doro.jpeg)
+![doro](/doro-chronicles/doro.jpg)
 
 ## doro 的头和身体
 
