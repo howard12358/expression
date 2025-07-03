@@ -239,3 +239,10 @@ img {
     max-width: min(550px, 100%); /* 不会超过 600px，也不会溢出容器 */
     height: auto; /* 等比缩放 */
 }
+
+p.about img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+}
