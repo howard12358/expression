@@ -61,12 +61,3 @@ func main() {
     fmt.Println("Hello, World!")
 }
 ```
-
-## Rust
-
-```rust
-fn main() {
-    println!("Hello, world!");
-}
-```
-
