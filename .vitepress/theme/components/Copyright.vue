@@ -2,7 +2,7 @@
     <div class="site-footer">
         MIT Licensed | Copyright © 2024-{{ new Date().getFullYear() }} <a class="vitepress" target="_blank"
                                                                           :href="website">{{ webTitle }}</a><br />
-        Powered by <a class="vitepress" target="_blank" href="//vitepress.vuejs.org/">VitePress</a>
+        Powered by <a class="vitepress" target="_blank" href="//vitepress.dev/">VitePress</a>
         Theme by <a class="vitepress" target="_blank" href="//github.com/airene/vitepress-blog-pure">Vitepress-blog</a>
     </div>
 </template>
