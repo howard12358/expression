@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      viewerjs:
+        specifier: ^1.11.7
+        version: 1.11.7
+      vitepress-plugin-image-viewer:
+        specifier: ^1.1.6
+        version: 1.1.6
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
@@ -1710,6 +1717,9 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
+  viewerjs@1.11.7:
+    resolution: {integrity: sha512-0JuVqOmL5v1jmEAlG5EBDR3XquxY8DWFQbFMprOXgaBB0F7Q/X9xWdEaQc59D8xzwkdUgXEMSSknTpriq95igg==}
+
   vite@5.4.19:
     resolution: {integrity: sha512-qO3aKv3HoQC8QKiNSTuUM1l9o/XX3+c+VTgLHbJWHZGeTPVAg2XwazI9UWzoxjIJCGCV2zU60uqMzjeLZuULqA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -1743,6 +1753,9 @@ packages:
 
   vitepress-plugin-comment-with-giscus@1.1.15:
     resolution: {integrity: sha512-1DJjgN+7SYvn5ZkjuSXPmz7nlqfcrh4qCGGviiZghA2ELXnaO2m9WY7m+RisPSaqCn90xqe0JbO2T4NMq8iUBg==}
+
+  vitepress-plugin-image-viewer@1.1.6:
+    resolution: {integrity: sha512-ZfYy1s/bXju6vGVsE/5gPXT449+KaXZ6ZIPAvcmPM07VmC7Bv57bCvFar2II7C2EjexxfPQsxUh70vSBbe14kQ==}
 
   vitepress@1.6.3:
     resolution: {integrity: sha512-fCkfdOk8yRZT8GD9BFqusW3+GggWYZ/rYncOfmgcDtP3ualNHCAg+Robxp2/6xfH1WwPHtGpPwv7mbA3qomtBw==}
@@ -3513,6 +3526,8 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
+  viewerjs@1.11.7: {}
+
   vite@5.4.19(@types/node@22.15.3):
     dependencies:
       esbuild: 0.21.5
@@ -3527,6 +3542,10 @@ snapshots:
       '@giscus/vue': 2.4.0(vue@3.5.13(typescript@5.8.3))
     transitivePeerDependencies:
       - vue
+
+  vitepress-plugin-image-viewer@1.1.6:
+    dependencies:
+      viewerjs: 1.11.7
 
   vitepress@1.6.3(@algolia/client-search@5.24.0)(@types/node@22.15.3)(postcss@8.5.3)(search-insights@2.17.2)(typescript@5.8.3):
     dependencies:

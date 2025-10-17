@@ -1,13 +1,15 @@
 import DefaultTheme from 'vitepress/theme'
-import type { Theme } from 'vitepress'
+import { Theme, useRoute } from 'vitepress'
 import NewLayout from './components/NewLayout.vue'
 import Archives from './components/Archives.vue'
 import Category from './components/Category.vue'
 import Tags from './components/Tags.vue'
 import Page from './components/Page.vue'
 import Comment from './components/CommentGiscus.vue'
+import vImageViewer from 'vitepress-plugin-image-viewer/lib/vImageViewer.vue'
 
 import './custom.css'
+import imageViewer from 'vitepress-plugin-image-viewer/lib/viewer'
 
 export default {
     ...DefaultTheme,
@@ -19,5 +21,11 @@ export default {
         app.component('Archives', Archives)
         app.component('Page', Page)
         app.component('Comment', Comment)
+        app.component('vImageViewer', vImageViewer)
+    },
+    setup() {
+        const route = useRoute()
+        // 启用插件
+        imageViewer(route)
     }
 } satisfies Theme
