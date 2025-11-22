@@ -40,9 +40,6 @@ public class EsCollector {
                 try {
                     CompletableFuture<Void> prev = CompletableFuture.completedFuture(null);
 
-                    Instant endTime = statDateTime.atZone(TimeUtils.SHANGHAI_ZONE).toInstant();
-                    Instant startTime = endTime.minus(task.getTaskInterval(), MINUTES);
-
                     List<DatabusServiceConfigDTO> dscList = sqlAnalyzeTaskService.getDataBusServiceConfig(task);
                     List<String> flagList = ctx.getFlagList();
 
@@ -72,13 +69,11 @@ public class EsCollector {
                                                                 segmentIdx
                                                         );
                                                         return hits;
-                                                    } catch (IOException e) {
-                                                        return 0L;
-                                                    }
+                                                    } catch (IOException e) {return 0L;}
                                                 }, esFetchExecutor)
                                         ).toArray(CompletableFuture[]::new)
                                 )
-                                // (2) 等本分钟所有节点都拉完，再 put marker
+                                // 等本分钟所有节点都拉完，再 put marker
                                 .thenRun(() -> {
                                     try {
                                         queue.put(EsSqlInfo.segmentMarker(segmentIdx));
