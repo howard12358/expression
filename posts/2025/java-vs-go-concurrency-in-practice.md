@@ -427,6 +427,8 @@ Go 的代码结构回归了最朴素的 **嵌套循环**。
 
 在 Go 中，我们可以利用 `sync.WaitGroup` 和 `Channel` 的特性来简化“全局结束”的判断，但对于“分段结束”的逻辑，依然保留类似引用计数的设计（因为分段是乱序完成的）。
 
+::: details 模拟数据结构
+
 ```go
 // --- 模拟数据结构 ---
 
@@ -475,7 +477,11 @@ func NewSqlAnalysisCoordinator(inCh <-chan EsSqlInfo, bus EventBus, maxConcurren
 		workerSem: make(chan struct{}, maxConcurrency), // 信号量控制并发
 	}
 }
+```
 
+:::
+
+```go
 // Run 启动协调器 (替代 Java 的 pollAndDispatch + 构造函数启动)
 func (c *SqlAnalysisCoordinator) Run(ctx context.Context) {
 	// 启动一个后台协程监控“全局结束”
