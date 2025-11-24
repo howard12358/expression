@@ -33,68 +33,65 @@ public class EsCollector {
         ThreadPoolTaskExecutor esFetchExecutor = SpringBeanUtils.getApplicationContext()
                 .getBean("esFetchExecutor", ThreadPoolTaskExecutor.class);
         SqlAnalyzeTask task = ctx.getSqlAnalyzeTask();
-        LocalDateTime statDateTime = ctx.getStatDateTime();
         long jobStart = ctx.getJobStartTime();
         try {
-            esCollectorExecutor.execute(() -> {
-                try {
-                    CompletableFuture<Void> prev = CompletableFuture.completedFuture(null);
+          try {
+              CompletableFuture<Void> prev = CompletableFuture.completedFuture(null);
 
-                    List<DatabusServiceConfigDTO> dscList = sqlAnalyzeTaskService.getDataBusServiceConfig(task);
-                    List<String> flagList = ctx.getFlagList();
+              List<DatabusServiceConfigDTO> dscList = sqlAnalyzeTaskService.getDataBusServiceConfig(task);
+              List<String> flagList = ctx.getFlagList();
 
-                    AtomicBoolean fetchFetched = new AtomicBoolean(false);
-                    SqlAnalysisCoordinator parser = new SqlAnalysisCoordinator(fetchFetched, ctx);
-                    BlockingQueue<EsSqlInfo> queue = parser.getSqlParseQueue();
-                    // 遍历每个 1 分钟小窗口
-                    for (int i = 0; i < task.getTaskInterval(); i++) {
-                        final int segmentIdx = i;
+              AtomicBoolean fetchFetched = new AtomicBoolean(false);
+              SqlAnalysisCoordinator parser = new SqlAnalysisCoordinator(fetchFetched, ctx);
+              BlockingQueue<EsSqlInfo> queue = parser.getSqlParseQueue();
+              // 遍历每个 1 分钟小窗口
+              for (int i = 0; i < task.getTaskInterval(); i++) {
+                  final int segmentIdx = i;
 
-                        Instant segmentStart = startTime.plus(i, ChronoUnit.MINUTES);
-                        Instant segmentEnd = segmentStart.plus(1, ChronoUnit.MINUTES);
+                  Instant segmentStart = startTime.plus(i, ChronoUnit.MINUTES);
+                  Instant segmentEnd = segmentStart.plus(1, ChronoUnit.MINUTES);
 
-                        // 保证每分钟窗口内的 es 拉取任务是串行的
-                        prev = prev.thenCompose(ignored -> CompletableFuture
-                                .allOf(dscList.stream()
-                                        .map(dsc -> CompletableFuture.supplyAsync(() -> {
-                                                    // （1）这里发起真正的单节点 ES 拉取
-                                                    try {
-                                                        // 构建 es 请求过程忽略
-                                                        long start = System.currentTimeMillis();
-                                                        // 参数构建步骤省略
-                                                        long hits = fetchSQLFromEs(
-                                                                getSearchRequest(q),
-                                                                client,
-                                                                queue,
-                                                                segmentIdx
-                                                        );
-                                                        return hits;
-                                                    } catch (IOException e) {return 0L;}
-                                                }, esFetchExecutor)
-                                        ).toArray(CompletableFuture[]::new)
-                                )
-                                // 等本分钟所有节点都拉完，再 put marker
-                                .thenRun(() -> {
-                                    try {
-                                        queue.put(EsSqlInfo.segmentMarker(segmentIdx));
-                                    } catch (InterruptedException ie) {
-                                        Thread.currentThread().interrupt();
-                                    }
-                                })
-                        );
-                    }
+                  // 保证每分钟窗口内的 es 拉取任务是串行的
+                  prev = prev.thenCompose(ignored -> CompletableFuture
+                          .allOf(dscList.stream()
+                                  .map(dsc -> CompletableFuture.supplyAsync(() -> {
+                                              // （1）这里发起真正的单节点 ES 拉取
+                                              try {
+                                                  // 构建 es 请求过程忽略
+                                                  long start = System.currentTimeMillis();
+                                                  // 参数构建步骤省略
+                                                  long hits = fetchSQLFromEs(
+                                                          getSearchRequest(q),
+                                                          client,
+                                                          queue,
+                                                          segmentIdx
+                                                  );
+                                                  return hits;
+                                              } catch (IOException e) {return 0L;}
+                                          }, esFetchExecutor)
+                                  ).toArray(CompletableFuture[]::new)
+                          )
+                          // 等本分钟所有节点都拉完，再 put marker
+                          .thenRun(() -> {
+                              try {
+                                  queue.put(EsSqlInfo.segmentMarker(segmentIdx));
+                              } catch (InterruptedException ie) {
+                                  Thread.currentThread().interrupt();
+                              }
+                          })
+                  );
+              }
 
-                    // 串联结束后，再发五分钟结束标记
-                    prev.thenRun(() -> {
-                                fetchFetched.set(true);
-                            })
-                            .exceptionally(t -> {
-                                log.error("An error occurred during the pulling process", t);
-                                fetchFetched.set(true);
-                                return null;
-                            });
-                } catch (Exception e) {}
-            });
+              // 串联结束后，再发五分钟结束标记
+              prev.thenRun(() -> {
+                          fetchFetched.set(true);
+                      })
+                      .exceptionally(t -> {
+                          log.error("An error occurred during the pulling process", t);
+                          fetchFetched.set(true);
+                          return null;
+                      });
+          } catch (Exception e) {}
         } catch (Exception e) {}
     }
 
@@ -106,8 +103,6 @@ public class EsCollector {
         final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
         searchRequest.scroll(scroll);
         SearchResponse searchResponse = esClient.search(searchRequest);
-
-        SqlAnalyzeTask task = ctx.getSqlAnalyzeTask();
         long hitCount = 0;
         try {
             do {
@@ -121,9 +116,7 @@ public class EsCollector {
                                 // 将数据放入阻塞队列
                                 sqlParseQueue.put(new EsSqlInfo(...));
                             }
-                        } catch (Exception e) {
-                            log.error("SQL enqueue error: {}", e.getMessage(), e);
-                        }
+                        } catch (Exception e) {}
                     });
                 }
                 String scrollId = searchResponse.getScrollId();
@@ -306,20 +299,38 @@ Java 为了实现高性能并发，代码中充满了各种“多线程原语”
 在 `EsCollector` 类中，为了并行拉取不同时间分片（Segment）的数据，这里使用了 `CompletableFuture` 的链式调用：
 
 ```java
-CompletableFuture.allOf(dscList.stream()
-    .map(dsc -> CompletableFuture.supplyAsync(() -> {
-        // ... 拉取逻辑
-    }, esFetchExecutor))
-    .toArray(CompletableFuture[]::new))
-.thenRun(() -> {
-    // ... 这一分钟拉取结束，放入标记位
-    queue.put(EsSqlInfo.segmentMarker(segmentIdx));
-});
+CompletableFuture<Void> prev = CompletableFuture.completedFuture(null);
+
+for (int i = 0; i < task.getTaskInterval(); i++) {
+    // 保证每分钟窗口内的 es 拉取任务是串行的
+    prev = prev.thenCompose(ignored -> CompletableFuture
+            .allOf(dscList.stream()
+                    .map(dsc -> CompletableFuture.supplyAsync(() -> {
+                                // ... 拉取逻辑
+                            }, esFetchExecutor)
+                    ).toArray(CompletableFuture[]::new)
+            )
+            // 等本分钟所有节点都拉完，再 put marker
+            .thenRun(() -> {
+                // ... 这一分钟拉取结束，放入标记位
+                queue.put(EsSqlInfo.segmentMarker(segmentIdx));
+            })
+    );
+}
+
+// 串联结束后，再发五分钟结束标记
+prev.thenRun(() -> {
+            fetchFetched.set(true);
+        })
+        .exceptionally(t -> {
+            fetchFetched.set(true);
+            return null;
+        });
 ```
 
 **痛点**：
 
-- **回调地狱的变体**：虽然 `CompletableFuture` 比 Callback 好，但这种 `allOf` + `thenRun` 依然破坏了代码的线性逻辑。
+- **回调地狱的变体**：虽然 `CompletableFuture` 比 `ExecutorService.invokeAll()` 好，但这种 `allOf` + `thenRun` 依然破坏了代码的线性逻辑。
 - **异常处理困难**：在 Future 链条中捕获异常并正确中断整个流程是非常麻烦的（代码中使用了 `exceptionally` 但阅读起来很跳跃）。
 
 ### 手写状态机来判断“任务是否完成”
@@ -368,7 +379,6 @@ func fetchFromES(ctx context.Context, task Task, dscList []DscConfig, outCh chan
         segmentTime := task.Start.Add(time.Duration(i) * time.Minute)
         // 创建一个新的 errgroup，仅用于管理“当前这 1 分钟”内的并发任务
         var g errgroup.Group 
-        
         // 2. 内层循环：控制“段内并发”
         for _, dsc := range dscList {
             dsc := dsc // 闭包陷阱：捕获循环变量
@@ -385,18 +395,15 @@ func fetchFromES(ctx context.Context, task Task, dscList []DscConfig, outCh chan
                 return nil
             })
         }
-        
         // 3. 关键点：Barrier（栅栏）
         // g.Wait() 会阻塞当前 Goroutine，直到“当前这 1 分钟”内启动的所有协程都执行完毕
         if err := g.Wait(); err != nil {
             return err
         }
-        
         // 4. 发送当前分片的结束标记 (Segment Marker)
         // 下游收到这个标记，就知道第 i 分钟的数据已经发完了，可以触发一次小聚合
         outCh <- Marker{SegmentIndex: i}
     }
-    
     return nil
 }
 ```
@@ -406,7 +413,7 @@ func fetchFromES(ctx context.Context, task Task, dscList []DscConfig, outCh chan
 Java 代码中为了实现这个逻辑，把“循环”拆解成 `CompletableFuture` 的链条（jdk21 引入虚拟线程后可能会有和 go 相似的处理）。
 
 - **逻辑**：`CurrentFuture.thenCompose(NextFuture)`。
-- **痛点**：你不能写 `for` 循环，因为 `for` 循环是同步阻塞的，会卡住主线程（或者你需要在一个巨大的线程池里阻塞等待）。你必须构建一个巨大的 `CompletableFuture` 链表。
+- **痛点**：这里没有选择 `for` 循环配合 `ExecutorService.invokeAll()` 实现，因为 `for` 循环是同步阻塞的，因此不得不构建一个巨大的 `CompletableFuture` 链表。
 
 **Go 的做法 (基于同步思维的并发)**
 
@@ -612,6 +619,6 @@ func (c *SqlAnalysisCoordinator) triggerSegmentFinishLocked(idx int, state *Segm
 在使用 Go 重写这类逻辑时，我们感受到的最大便利并非性能的数倍提升（虽然通常确实更快），而是**心智负担的显著降低**。
 
 - **Java**: 我是在**管理**线程，在**协调**状态。
-  **Java Flow:** `[ES] --(Future)--> [Queue] <--(Poll & AtomicCheck)-- [Coordinator] --(Event)--> [Aggregator]` *(状态分散在 Queue, Coordinator 的 Atomic 变量, 和 Future 的回调中)*
+  - **Java Flow:** `[ES] --(Future)--> [Queue] <--(Poll & AtomicCheck)-- [Coordinator] --(Event)--> [Aggregator]` *(状态分散在 Queue, Coordinator 的 Atomic 变量, 和 Future 的回调中)*
 - **Go**: 我在**描述**数据的流向。
-  **Go Flow:** `[ES] --(Chan)--> [Worker] --(Chan)--> [Aggregator]` *(状态由 Channel 的 Open/Close 状态自然流转)*
+  - **Go Flow:** `[ES] --(Chan)--> [Worker] --(Chan)--> [Aggregator]` *(状态由 Channel 的 Open/Close 状态自然流转)*
