@@ -11,9 +11,9 @@ description:
 
 # Java vs Go 并发实战 (数据流式处理)
 
-::: details 代码细节
+**代码细节：**
 
-`EsCollector`类：
+::: details `EsCollector`类
 
 ```java
 @Slf4j
@@ -135,7 +135,9 @@ public class EsCollector {
 }
 ```
 
-`SqlAnalysisCoordinator`类：
+:::
+
+::: details `SqlAnalysisCoordinator`类
 
 ```java
 /**
@@ -482,6 +484,22 @@ func NewSqlAnalysisCoordinator(inCh <-chan EsSqlInfo, bus EventBus, maxConcurren
 :::
 
 ```go
+type SqlAnalysisCoordinator struct {
+	inCh     <-chan EsSqlInfo // 输入通道 (替代 BlockingQueue)
+	eventBus EventBus
+
+	// 状态管理
+	mu       sync.Mutex            // 保护 segMap
+	segMap   map[int]*SegmentState // 替代 segPendingCountMap 和 segParsedCountMap
+
+	// 全局计数
+	totalPublished int64
+	
+	// 并发控制
+	workerSem chan struct{}  // 替代 ThreadPoolTaskExecutor，限制并发数
+	globalWg  sync.WaitGroup // 用于判断全局任务是否全部完成
+}
+
 // Run 启动协调器 (替代 Java 的 pollAndDispatch + 构造函数启动)
 func (c *SqlAnalysisCoordinator) Run(ctx context.Context) {
 	// 启动一个后台协程监控“全局结束”
