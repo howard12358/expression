@@ -7,7 +7,7 @@ const pageSize = 10
 const isProd = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
-    title: '林骁阳',
+    title: '章北海',
     base: '/',
     cacheDir: './node_modules/vitepress_cache',
     description: 'vitepress,blog,thoughts',
