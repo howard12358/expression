@@ -12,11 +12,13 @@
             <Comment />
         </template>
     </Layout>
+    <ThemeSweepOverlay />
     <Copyright />
 </template>
 <script setup>
 import DefaultTheme from 'vitepress/theme'
 import Copyright from './Copyright.vue'
+import ThemeSweepOverlay from './ThemeSweepOverlay.vue'
 import { withBase } from 'vitepress'
 
 const { Layout } = DefaultTheme
