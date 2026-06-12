@@ -51,4 +51,4 @@ function generatePaginationArray(pagesNum: number, currentPage: number, margin: 
     return result
 }
 
-export {generatePaginationArray}
+export { generatePaginationArray }

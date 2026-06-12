@@ -1,5 +1,5 @@
-import {defineConfig} from 'vitepress'
-import {getPosts} from './theme/serverUtils'
+import { defineConfig } from 'vitepress'
+import { getPosts } from './theme/serverUtils'
 
 //每页的文章数量
 const pageSize = 10
@@ -22,11 +22,11 @@ export default defineConfig({
             categoryId: 'DIC_kwDONQJ6es4CpwYH'
         },
         nav: [
-            {text: '首页', link: '/'},
-            {text: '分类', link: '/pages/category'},
-            {text: '时间线', link: '/pages/archives'},
-            {text: '标签', link: '/pages/tags'},
-            {text: '关于', link: '/pages/about'}
+            { text: '首页', link: '/' },
+            { text: '分类', link: '/pages/category' },
+            { text: '时间线', link: '/pages/archives' },
+            { text: '标签', link: '/pages/tags' },
+            { text: '关于', link: '/pages/about' }
             // { text: 'Airene', link: 'http://airene.net' }  -- External link test
         ],
         search: {
@@ -36,20 +36,20 @@ export default defineConfig({
         outline: {
             label: '目录'
         },
-        socialLinks: [{icon: 'github', link: 'https://github.com/howard12358/expression'}]
+        socialLinks: [{ icon: 'github', link: 'https://github.com/howard12358/expression' }]
     } as any,
 
     srcExclude: isProd
         ? [
-            '**/trash/**/*.md', // 排除所有 trash 目录
-            '**/draft/**/*.md', // 递归排除子目录
-            '**/private-notes/*.md', // 排除特定文件
-            'README.md'
-        ]
+              '**/trash/**/*.md', // 排除所有 trash 目录
+              '**/draft/**/*.md', // 递归排除子目录
+              '**/private-notes/*.md', // 排除特定文件
+              'README.md'
+          ]
         : ['README.md'],
     vite: {
         //build: { minify: false }
-        server: {port: 5000}
+        server: { port: 5000 }
     },
     cleanUrls: true
     /*

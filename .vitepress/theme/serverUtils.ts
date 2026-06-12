@@ -1,7 +1,7 @@
-import {globby} from 'globby'
+import { globby } from 'globby'
 import matter from 'gray-matter'
 import fs from 'fs-extra'
-import {resolve, join} from 'path'
+import { resolve } from 'path'
 
 async function getPosts(pageSize: number) {
     const isProd = process.env.NODE_ENV === 'production'
@@ -17,7 +17,7 @@ async function getPosts(pageSize: number) {
     let posts = await Promise.all(
         paths.map(async (item) => {
             const content = await fs.readFile(item, 'utf-8')
-            const {data} = matter(content)
+            const { data } = matter(content)
             return {
                 frontMatter: {
                     ...data,
@@ -62,7 +62,7 @@ const posts = theme.value.posts.slice(${pageSize * (i - 1)},${pageSize * i})
         }
     }
     // rename page_1 to index for homepage
-    await fs.move(paths + '/page_1.md', paths + '/index.md', {overwrite: true})
+    await fs.move(paths + '/page_1.md', paths + '/index.md', { overwrite: true })
 }
 
 function _convertDate(date = new Date().toString()) {
@@ -86,4 +86,4 @@ function _convertOrder(input?: unknown): number {
     return isNaN(num) ? 0 : num
 }
 
-export {getPosts}
+export { getPosts }
