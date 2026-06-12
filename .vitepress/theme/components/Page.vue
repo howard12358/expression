@@ -16,17 +16,39 @@
     </div>
 
     <div class="pagination" v-if="pagesNum > 1">
-        <span v-for="(item, index) in pageArray" :key="index" :class="['link', { active: item === pageCurrent }]">
-            <template v-if="item === '...'"> ... </template>
-            <template v-else-if="item === pageCurrent">
-                {{ item }}
-            </template>
-            <template v-else>
-                <a :href="withBase(item === 1 ? '/index.html' : `/page_${item}.html`)">
+        <a
+            v-if="pageCurrent > 1"
+            class="pager pager-nav"
+            :href="withBase(pageCurrent - 1 === 1 ? '/index.html' : `/page_${pageCurrent - 1}.html`)"
+        >
+            上一页
+        </a>
+        <span v-else class="pager pager-nav is-disabled">上一页</span>
+
+        <div class="pager-numbers">
+            <template v-for="(item, index) in pageArray" :key="index">
+                <span v-if="item === '...'" class="pager pager-number pager-ellipsis">...</span>
+                <span v-else-if="item === pageCurrent" class="pager pager-number active">
+                    {{ item }}
+                </span>
+                <a
+                    v-else
+                    class="pager pager-number"
+                    :href="withBase(item === 1 ? '/index.html' : `/page_${item}.html`)"
+                >
                     {{ item }}
                 </a>
             </template>
-        </span>
+        </div>
+
+        <a
+            v-if="pageCurrent < pagesNum"
+            class="pager pager-nav"
+            :href="withBase(pageCurrent + 1 === 1 ? '/index.html' : `/page_${pageCurrent + 1}.html`)"
+        >
+            下一页
+        </a>
+        <span v-else class="pager pager-nav is-disabled">下一页</span>
     </div>
 </template>
 
@@ -101,25 +123,77 @@ const pageArray = computed(() => {
 }
 
 .pagination {
-    margin-top: 16px;
+    margin-top: 28px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.link {
-    display: inline-block;
-    width: 26px;
-    text-align: center;
-    border: 1px var(--vp-c-divider) solid;
-    border-right: none;
-    font-weight: 400;
-    border-radius: 20px;
+.pager {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    line-height: 1;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.link.active {
-    background: var(--vp-c-text-1);
-    color: var(--vp-c-neutral-inverse);
-    border: 1px solid var(--vp-c-text-1) !important;
+.pager-numbers {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pager-number {
+    border: 1px solid transparent;
+    color: var(--vp-c-text-2);
+    text-decoration: none;
+}
+
+.pager-number:not(.active):not(.pager-ellipsis):hover {
+    background: var(--vp-c-bg-soft);
+    border-color: var(--vp-c-divider);
+    color: var(--vp-c-text-1);
+}
+
+.pager-nav {
+    border: 1px solid var(--vp-c-divider);
+    color: var(--vp-c-text-2);
+    background: var(--vp-c-bg);
+}
+
+.pager-nav:hover {
+    border-color: var(--vp-c-brand);
+    color: var(--vp-c-brand);
+}
+
+.pager-ellipsis {
+    min-width: 24px;
+    padding: 0 4px;
+    color: var(--vp-c-text-3);
+}
+
+.pager.active {
+    background: color-mix(in srgb, var(--vp-c-brand) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand) 28%, var(--vp-c-divider));
+    color: var(--vp-c-brand);
+    font-weight: 500;
+}
+
+.is-disabled {
+    border: 1px solid var(--vp-c-divider);
+    color: var(--vp-c-text-3);
+    background: var(--vp-c-bg-soft);
+    cursor: default;
 }
 
 @media screen and (max-width: 768px) {
@@ -150,6 +224,21 @@ const pageArray = computed(() => {
         -webkit-line-clamp: 3;
         overflow: hidden;
         margin: 0.5rem 0 1rem;
+    }
+
+    .pagination {
+        gap: 8px;
+    }
+
+    .pager {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 0.8125rem;
+    }
+
+    .pager-numbers {
+        gap: 4px;
     }
 }
 </style>
