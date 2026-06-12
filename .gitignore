@@ -8,9 +8,13 @@ smartmontools.md
 zsh_history.md
 /*.md
 !/changelog.md
+!/AGENTS.md
 /package-lock.json
 origin_theme.css
 .vitepress/cache
+.vitepress/dist
+playwright-report
+test-results
 draft
 private-notes
 trash

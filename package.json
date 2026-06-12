@@ -6,7 +6,10 @@
     "scripts": {
         "dev": "vitepress dev --host 0.0.0.0",
         "build": "cross-env NODE_ENV=production vitepress build",
-        "preview": "cross-env NODE_ENV=production vitepress preview"
+        "preview": "cross-env NODE_ENV=production vitepress preview",
+        "test": "pnpm test:unit && pnpm test:e2e",
+        "test:unit": "vitest run",
+        "test:e2e": "playwright test"
     },
     "keywords": [],
     "author": "",
@@ -14,6 +17,7 @@
     "type": "module",
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@playwright/test": "^1.54.2",
         "@types/fs-extra": "^11.0.4",
         "@types/node": "^22.14.1",
         "@typescript-eslint/eslint-plugin": "^8.60.0",
@@ -33,6 +37,7 @@
         "vite": "^8.0.14",
         "vitepress": "^1.6.4",
         "vue-eslint-parser": "^10.3.0",
+        "vitest": "^3.2.4",
         "vitepress-plugin-comment-with-giscus": "^1.1.15"
     },
     "dependencies": {

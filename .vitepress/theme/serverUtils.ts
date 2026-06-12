@@ -5,7 +5,7 @@ import { resolve } from 'path'
 
 async function getPosts(pageSize: number) {
     const isProd = process.env.NODE_ENV === 'production'
-    const ignorePaths = isProd ? ['posts/draft/**/*.md', 'posts/private-notes/**/*.md', 'posts/trash/**/*.md'] : []
+    const ignorePaths = getIgnorePaths(isProd)
 
     let paths = await globby(['posts/**/**.md'], {
         ignore: ignorePaths
@@ -19,13 +19,7 @@ async function getPosts(pageSize: number) {
             const content = await fs.readFile(item, 'utf-8')
             const { data } = matter(content)
             return {
-                frontMatter: {
-                    ...data,
-                    // 处理日期：无效日期回退当前时间
-                    date: _convertDate(data.date),
-                    // 处理 order：非数值时强制转换为 0
-                    order: _convertOrder(data.order)
-                },
+                frontMatter: normalizeFrontMatter(data),
                 regularPath: `/${item.replace('.md', '.html')}`
             }
         })
@@ -66,7 +60,8 @@ const posts = theme.value.posts.slice(${pageSize * (i - 1)},${pageSize * i})
 }
 
 function _convertDate(date = new Date().toString()) {
-    const json_date = new Date(date).toJSON()
+    const parsedDate = new Date(date)
+    const json_date = Number.isNaN(parsedDate.getTime()) ? new Date().toJSON() : parsedDate.toJSON()
     return json_date.split('T')[0]
 }
 
@@ -86,4 +81,16 @@ function _convertOrder(input?: unknown): number {
     return isNaN(num) ? 0 : num
 }
 
-export { getPosts }
+function getIgnorePaths(isProd: boolean) {
+    return isProd ? ['posts/draft/**/*.md', 'posts/private-notes/**/*.md', 'posts/trash/**/*.md'] : []
+}
+
+function normalizeFrontMatter(data: Record<string, any>) {
+    return {
+        ...data,
+        date: _convertDate(data.date),
+        order: _convertOrder(data.order)
+    }
+}
+
+export { getIgnorePaths, getPosts, normalizeFrontMatter }
