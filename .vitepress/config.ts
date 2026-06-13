@@ -6,6 +6,10 @@ const pageSize = 10
 
 const isProd = process.env.NODE_ENV === 'production'
 
+function escapeHtml(value: string) {
+    return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
 export default defineConfig({
     title: '章北海',
     base: '/',
@@ -51,7 +55,25 @@ export default defineConfig({
         //build: { minify: false }
         server: { port: 5000 }
     },
-    cleanUrls: true
+    cleanUrls: true,
+    markdown: {
+        config(md) {
+            const defaultFence =
+                md.renderer.rules.fence ?? ((tokens, idx, options, env, self) => self.renderToken(tokens, idx, options))
+
+            md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+                const token = tokens[idx]
+                const info = token.info.trim().split(/\s+/)[0]
+
+                if (info === 'mermaid') {
+                    const encodedCode = escapeHtml(JSON.stringify(token.content))
+                    return `<Mermaid :code="${encodedCode}" />`
+                }
+
+                return defaultFence(tokens, idx, options, env, self)
+            }
+        }
+    }
     /*
       optimizeDeps: {
           keepNames: true

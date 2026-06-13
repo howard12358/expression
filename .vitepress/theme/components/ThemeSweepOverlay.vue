@@ -2,12 +2,6 @@
 import { nextTick, onBeforeUnmount, onMounted } from 'vue'
 import { useData } from 'vitepress'
 
-interface ViewTransitionDocument extends Document {
-    startViewTransition?: (callback: () => Promise<void> | void) => {
-        ready: Promise<void>
-    }
-}
-
 const { isDark } = useData()
 const TRANSITION_DURATION = 680
 const TRANSITION_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
@@ -30,7 +24,9 @@ async function triggerSweep(event: MouseEvent) {
     const expandClipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
     const collapseClipPath = [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`]
     const nextThemeIsDark = !isDark.value
-    const transitionDocument = document as ViewTransitionDocument
+    const transitionDocument = document as Document & {
+        startViewTransition?: any
+    }
 
     if (!transitionDocument.startViewTransition) {
         isDark.value = nextThemeIsDark

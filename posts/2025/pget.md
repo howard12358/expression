@@ -51,36 +51,37 @@ Usage: pget [options] URL
 
 ## 时序图
 
-![时序图](/posts/pget/pget时序图.png)
-
-::: details mermaid 时序图
 ```mermaid
 sequenceDiagram
-    participant 用户
-    participant CLI as pget.Run
-    participant Check模块 as Check()
-    participant 远程资源 as Remote HTTP
-    participant Download模块 as Download()
-    participant 文件系统 as FS
+    participant U as 用户
+    participant P as pget.Run
+    participant C as Check()
+    participant R as Remote HTTP
+    participant D as Download()
+    participant F as FS
 
-    用户->>CLI: 执行 `pget download <URL…>`
-    CLI->>Check模块: Check(ctx, URLs, Client)
-    alt 并行发起 HEAD 请求
-        Check模块->>远程资源: HEAD URL1
-        Check模块->>远程资源: HEAD URL2
-        远程资源-->>Check模块: 返回 Content-Length, Accept-Ranges, ETag/Last-Modified
+    U->>P: 执行 pget download URL
+    P->>C: Check(ctx, URLs, Client)
+
+    rect rgb(35, 38, 54)
+        Note over C,R: [并行发起 HEAD 请求]
+        C->>R: HEAD URL1
+        C->>R: HEAD URL2
+        R-->>C: 返回 Content-Length, Accept-Ranges, ETag/Last-Modified
     end
-    Check模块-->>CLI: 返回 Target{Filename, ContentLength, URLs}
-    CLI->>Download模块: Download(ctx, DownloadConfig{…})
-    Download模块->>Download模块: 计算 TaskSize, 调用 assignTasks
-    loop 并发下载各分块
-        Download模块->>远程资源: GET URL   Range: bytes=start-end
-        远程资源-->>Download模块: 返回对应字节数据
-        Download模块->>文件系统: 写入分片文件(.part)
+
+    C-->>P: 返回 Target{Filename, ContentLength, URLs}
+    P->>D: Download(ctx, DownloadConfig)
+    D->>D: 计算 TaskSize, 调用 assignTasks
+
+    loop [并发下载各分块]
+        D->>R: GET URL Range: bytes=start-end
+        R-->>D: 返回对应字节数据
+        D->>F: 写入分片文件(.part)
     end
-    Download模块->>Download模块: bindFiles(合并所有 .part 文件)
-    Download模块->>文件系统: 写入最终文件 `Filename`
-    Download模块-->>CLI: 返回 nil (无错误)
-    CLI-->>用户: 打印“下载完成，保存路径：./Filename”
+
+    D->>F: bindFiles(合并所有 .part 文件)
+    F-->>D: 写入最终文件 `Filename`
+    D-->>P: 返回 nil (无错误)
+    P-->>U: 打印下载完成, 保存路径: ./Filename
 ```
-:::

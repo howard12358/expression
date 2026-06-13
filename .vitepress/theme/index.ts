@@ -6,6 +6,7 @@ import Category from './components/Category.vue'
 import Tags from './components/Tags.vue'
 import Page from './components/Page.vue'
 import Comment from './components/CommentGiscus.vue'
+import Mermaid from './components/Mermaid.vue'
 import vImageViewer from 'vitepress-plugin-image-viewer/lib/vImageViewer.vue'
 
 import './custom.css'
@@ -21,6 +22,7 @@ export default {
         app.component('Archives', Archives)
         app.component('Page', Page)
         app.component('Comment', Comment)
+        app.component('Mermaid', Mermaid)
         app.component('vImageViewer', vImageViewer)
     },
     setup() {

@@ -25,12 +25,18 @@ export default [
                 }
             },
             globals: {
+                Animation: 'readonly',
+                Document: 'readonly',
+                HTMLElement: 'readonly',
+                MouseEvent: 'readonly',
+                URLSearchParams: 'readonly',
                 window: 'readonly',
                 document: 'readonly',
                 console: 'readonly',
+                fetch: 'readonly',
                 location: 'readonly',
                 process: 'readonly',
-                URLSearchParams: 'readonly'
+                requestAnimationFrame: 'readonly'
             }
         },
         plugins: {
