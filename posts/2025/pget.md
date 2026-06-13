@@ -51,7 +51,7 @@ Usage: pget [options] URL
 
 ## 时序图
 
-![时序图](/img/pget时序图.png)
+![时序图](/posts/pget/pget时序图.png)
 
 ::: details mermaid 时序图
 ```mermaid
