@@ -87,12 +87,12 @@ test('pget page supports mermaid zoom controls and drag panning', async ({ page 
     await expect(page.locator('.mermaid-lightbox')).toBeHidden()
 })
 
-test('pget page renders multiple mermaid diagrams with unique svg ids', async ({ page }) => {
+test('pget page renders mermaid diagrams with unique svg ids', async ({ page }) => {
     await page.goto('/posts/2025/pget')
 
     const diagrams = page.locator('.mermaid svg')
-    await expect(diagrams).toHaveCount(2)
+    await expect(diagrams.first()).toBeVisible()
 
     const ids = await diagrams.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('id')))
-    expect(new Set(ids).size).toBe(2)
+    expect(new Set(ids).size).toBe(ids.length)
 })

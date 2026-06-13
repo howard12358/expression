@@ -111,6 +111,7 @@ function nextRenderId() {
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useData } from 'vitepress'
+import { resolveMermaidThemeTokens } from '../mermaidTheme'
 
 const MIN_SCALE = 0.5
 const MAX_SCALE = 2.5
@@ -235,15 +236,16 @@ function closeLightbox() {
 
 async function renderDiagram() {
     const mermaid = (await import('mermaid')).default
+    const darkMode = document.documentElement.classList.contains('dark')
 
     mermaid.initialize({
         startOnLoad: false,
         securityLevel: 'loose',
-        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default'
+        theme: darkMode ? 'dark' : 'default'
     })
 
     const source = props.src ? await fetch(props.src).then((response) => response.text()) : props.code || ''
-    const normalizedSource = source.trim()
+    const normalizedSource = resolveMermaidThemeTokens(source.trim(), darkMode)
     const [{ svg: renderedInlineSvg }, { svg: renderedLightboxSvg }] = await Promise.all([
         mermaid.render(nextRenderId(), normalizedSource),
         mermaid.render(nextRenderId(), normalizedSource)
@@ -295,10 +297,10 @@ watch(isDark, () => {
     z-index: 2;
     margin-bottom: 0;
     padding: 0.375rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.08);
     border-radius: 999px;
-    background: rgba(20, 20, 24, 0.72);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.1);
     backdrop-filter: blur(14px);
 }
 
@@ -334,21 +336,27 @@ watch(isDark, () => {
 }
 
 .mermaid-toolbar .mermaid-tool {
+    border-color: rgba(15, 23, 42, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.dark .mermaid-toolbar {
     border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(20, 20, 24, 0.72);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
 }
 
 .dark .mermaid-toolbar .mermaid-tool {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.mermaid-toolbar-overlay .mermaid-tool {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
     color: rgba(255, 255, 255, 0.9);
 }
 
 .mermaid-toolbar-overlay .mermaid-tool:hover {
+    background: rgba(255, 255, 255, 0.86);
+}
+
+.dark .mermaid-toolbar-overlay .mermaid-tool:hover {
     border-color: rgba(255, 255, 255, 0.22);
     background: rgba(255, 255, 255, 0.08);
     color: #fff;

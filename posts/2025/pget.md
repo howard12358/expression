@@ -63,7 +63,7 @@ sequenceDiagram
     U->>P: 执行 pget download URL
     P->>C: Check(ctx, URLs, Client)
 
-    rect rgb(35, 38, 54)
+    rect rgba(127, 127, 127, 0.12)
         Note over C,R: [并行发起 HEAD 请求]
         C->>R: HEAD URL1
         C->>R: HEAD URL2
