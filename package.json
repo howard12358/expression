@@ -5,7 +5,10 @@
     "main": "index.js",
     "scripts": {
         "dev": "vitepress dev --host 0.0.0.0",
+        "images:optimize": "node scripts/optimize-images.mjs --root .vitepress/dist/posts",
+        "images:optimize:dry": "node scripts/optimize-images.mjs --root public/posts --dry-run",
         "build": "cross-env NODE_ENV=production vitepress build",
+        "postbuild": "pnpm images:optimize",
         "preview": "cross-env NODE_ENV=production vitepress preview",
         "test": "pnpm test:unit && pnpm test:e2e",
         "test:unit": "vitest run",
@@ -33,12 +36,13 @@
         "globby": "^16.2.0",
         "gray-matter": "^4.0.3",
         "prettier": "^3.5.3",
+        "sharp": "^0.35.1",
         "typescript": "^6.0.3",
         "vite": "^8.0.14",
         "vitepress": "^1.6.4",
-        "vue-eslint-parser": "^10.3.0",
+        "vitepress-plugin-comment-with-giscus": "^1.1.15",
         "vitest": "^3.2.4",
-        "vitepress-plugin-comment-with-giscus": "^1.1.15"
+        "vue-eslint-parser": "^10.3.0"
     },
     "dependencies": {
         "mermaid": "^11.12.0",

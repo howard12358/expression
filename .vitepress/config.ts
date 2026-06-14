@@ -48,9 +48,11 @@ export default defineConfig({
               '**/trash/**/*.md', // 排除所有 trash 目录
               '**/draft/**/*.md', // 递归排除子目录
               '**/private-notes/*.md', // 排除特定文件
+              'docs/**/*.md',
+              'AGENTS.md',
               'README.md'
           ]
-        : ['README.md'],
+        : ['docs/**/*.md', 'AGENTS.md', 'README.md'],
     vite: {
         //build: { minify: false }
         server: { port: 5000 }
