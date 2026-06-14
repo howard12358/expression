@@ -9,6 +9,11 @@ type Post = {
     regularPath: string
 }
 
+const CATEGORY_LABEL_MAP: Record<string, string> = {
+    技术: '技术',
+    一个猜想: '随笔'
+}
+
 export function initTags(posts: Post[]): Record<string, Post[]> {
     const data: Record<string, Post[]> = {}
     posts.forEach((post) => {
@@ -35,7 +40,19 @@ export function initCategory(posts: Post[]) {
             }
         }
     }
-    return data
+
+    const preferredOrder = ['技术', '一个猜想']
+    return Object.fromEntries(
+        Object.entries(data).sort(([left], [right]) => {
+            const leftIndex = preferredOrder.indexOf(left)
+            const rightIndex = preferredOrder.indexOf(right)
+
+            if (leftIndex === -1 && rightIndex === -1) return left.localeCompare(right, 'zh-Hans-CN')
+            if (leftIndex === -1) return 1
+            if (rightIndex === -1) return -1
+            return leftIndex - rightIndex
+        })
+    )
 }
 
 export function useYearSort(post: Post[]) {
@@ -57,4 +74,9 @@ export function useYearSort(post: Post[]) {
         }
     }
     return data
+}
+
+export function getCategoryLabel(category?: string) {
+    if (!category) return ''
+    return CATEGORY_LABEL_MAP[category] ?? category
 }

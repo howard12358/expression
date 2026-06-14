@@ -5,6 +5,9 @@
                 {{ article.frontMatter.order > 0 ? '📌' : '' }}
                 <a :href="withBase(article.regularPath)"> {{ article.frontMatter.title }}</a>
             </div>
+            <span v-if="article.frontMatter.category" class="post-category">
+                {{ getCategoryLabel(article.frontMatter.category) }}
+            </span>
         </div>
         <p class="describe" v-html="article.frontMatter.description"></p>
         <div class="post-info">
@@ -56,6 +59,7 @@
 import { withBase } from 'vitepress'
 import { PropType, computed } from 'vue'
 import { generatePaginationArray } from '../pagination'
+import { getCategoryLabel } from '../functions'
 
 interface Article {
     regularPath: string
@@ -65,6 +69,7 @@ interface Article {
         description: string
         date: string
         tags: string[]
+        category?: string
     }
 }
 
@@ -75,11 +80,11 @@ const props = defineProps({
     },
     pageCurrent: {
         type: Number as PropType<number>,
-        required: true
+        default: 1
     },
     pagesNum: {
         type: Number as PropType<number>,
-        required: true
+        default: 1
     }
 })
 
@@ -98,6 +103,7 @@ const pageArray = computed(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 }
 
 .post-title {
@@ -109,6 +115,21 @@ const pageArray = computed(() => {
 
 .post-title a {
     color: var(--bt-theme-title) !important;
+}
+
+.post-category {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--vp-c-brand) 16%, var(--vp-c-divider));
+    background: color-mix(in srgb, var(--vp-c-brand) 6%, transparent);
+    color: var(--vp-c-text-2);
+    font-size: 0.75rem;
+    line-height: 1;
 }
 
 .describe {
@@ -205,6 +226,7 @@ const pageArray = computed(() => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 10px;
     }
 
     .post-title {
@@ -214,7 +236,8 @@ const pageArray = computed(() => {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
-        width: 17rem;
+        width: auto;
+        flex: 1;
     }
 
     .describe {
@@ -228,6 +251,12 @@ const pageArray = computed(() => {
 
     .pagination {
         gap: 8px;
+    }
+
+    .post-category {
+        height: 22px;
+        padding: 0 8px;
+        font-size: 0.6875rem;
     }
 
     .pager {

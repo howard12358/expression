@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, afterEach } from 'vitest'
-import { getIgnorePaths, normalizeFrontMatter } from '../../.vitepress/theme/serverUtils'
+import { getIgnorePaths, normalizeFrontMatter, shouldIncludePost } from '../../.vitepress/theme/serverUtils'
 
 describe('normalizeFrontMatter', () => {
     afterEach(() => {
@@ -47,5 +47,16 @@ describe('getIgnorePaths', () => {
 
     it('returns no ignored paths for local development', () => {
         expect(getIgnorePaths(false)).toEqual([])
+    })
+})
+
+describe('shouldIncludePost', () => {
+    it('excludes posts explicitly marked as hidden', () => {
+        expect(shouldIncludePost({ hidden: true })).toBe(false)
+    })
+
+    it('includes posts when hidden is absent or false', () => {
+        expect(shouldIncludePost({})).toBe(true)
+        expect(shouldIncludePost({ hidden: false })).toBe(true)
     })
 })

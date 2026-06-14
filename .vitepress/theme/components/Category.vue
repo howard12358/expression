@@ -1,7 +1,7 @@
 <template>
     <div v-for="(posts, key) in data">
         <div class="category">
-            {{ key }}
+            {{ getCategoryLabel(String(key)) }}
         </div>
         <a :href="withBase(article.regularPath)" v-for="(article, index) in posts" :key="index" class="posts">
             <div class="post-container">
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
-import { initCategory } from '../functions'
+import { getCategoryLabel, initCategory } from '../functions'
 
 const { theme } = useData()
 const data = computed(() => initCategory(theme.value.posts))

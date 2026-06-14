@@ -11,10 +11,8 @@ async function getPosts(pageSize: number) {
         ignore: ignorePaths
     })
 
-    //这里只是生成分页时才用到
-    await generatePaginationPages(paths.length, pageSize)
-
-    let posts = await Promise.all(
+    let posts = (
+        await Promise.all(
         paths.map(async (item) => {
             const content = await fs.readFile(item, 'utf-8')
             const { data } = matter(content)
@@ -23,7 +21,12 @@ async function getPosts(pageSize: number) {
                 regularPath: `/${item.replace('.md', '.html')}`
             }
         })
-    )
+        )
+    ).filter((post) => shouldIncludePost(post.frontMatter))
+
+    // 这里只是生成分页时才用到
+    await generatePaginationPages(posts.length, pageSize)
+
     posts.sort(_compareDate as any)
     return posts
 }
@@ -85,6 +88,10 @@ function getIgnorePaths(isProd: boolean) {
     return isProd ? ['posts/draft/**/*.md', 'posts/private-notes/**/*.md', 'posts/trash/**/*.md'] : []
 }
 
+function shouldIncludePost(frontMatter: Record<string, any>) {
+    return frontMatter.hidden !== true
+}
+
 function normalizeFrontMatter(data: Record<string, any>) {
     return {
         ...data,
@@ -93,4 +100,4 @@ function normalizeFrontMatter(data: Record<string, any>) {
     }
 }
 
-export { getIgnorePaths, getPosts, normalizeFrontMatter }
+export { getIgnorePaths, getPosts, normalizeFrontMatter, shouldIncludePost }

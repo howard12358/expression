@@ -15,11 +15,27 @@
 
 <script lang="ts" setup>
 import { useData, withBase } from 'vitepress'
-import { computed } from 'vue'
+import { computed, PropType } from 'vue'
 import { useYearSort } from '../functions'
 
 const { theme } = useData()
-const data = computed(() => useYearSort(theme.value.posts))
+
+type Article = {
+    regularPath: string
+    frontMatter: {
+        date: string
+        title: string
+    }
+}
+
+const props = defineProps({
+    posts: {
+        type: Array as PropType<Article[] | undefined>,
+        default: undefined
+    }
+})
+
+const data = computed(() => useYearSort(props.posts ?? theme.value.posts))
 </script>
 
 <style scoped>

@@ -27,7 +27,8 @@ export default defineConfig({
         },
         nav: [
             { text: '首页', link: '/' },
-            { text: '分类', link: '/pages/category' },
+            { text: '技术', link: '/pages/tech' },
+            { text: '随笔', link: '/pages/essays' },
             { text: '时间线', link: '/pages/archives' },
             { text: '标签', link: '/pages/tags' },
             { text: '关于', link: '/pages/about' }
