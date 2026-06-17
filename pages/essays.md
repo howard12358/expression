@@ -1,5 +1,5 @@
 ---
-page: true
+layout: page
 title: 随笔
 description: Essays
 aside: false

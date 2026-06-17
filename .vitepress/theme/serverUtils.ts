@@ -40,7 +40,7 @@ async function generatePaginationPages(total: number, pageSize: number) {
         for (let i = 1; i < pagesNum + 1; i++) {
             const page = `
 ---
-page: true
+layout: page
 title: ${i === 1 ? '首页' : '第 ' + i + ' 页'}
 aside: false
 comment: false

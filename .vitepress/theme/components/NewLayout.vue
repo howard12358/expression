@@ -11,9 +11,11 @@
         <template #doc-bottom>
             <Comment />
         </template>
+        <template #layout-bottom>
+            <Copyright />
+        </template>
     </Layout>
     <ThemeSweepOverlay />
-    <Copyright />
 </template>
 <script setup>
 import DefaultTheme from 'vitepress/theme'

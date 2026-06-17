@@ -1,5 +1,5 @@
 ---
-page: true
+layout: page
 title: 标签
 description: Tags
 aside: false

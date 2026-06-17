@@ -21,10 +21,6 @@
 
 /* theme reset start */
 
-.Layout {
-    min-height: calc(100vh - 78px) !important; /* reduce copyright */
-}
-
 .vp-doc a {
     color: var(--vp-c-text-1);
     font-weight: 500;

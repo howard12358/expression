@@ -17,6 +17,22 @@ test('pagination navigates to another page when available', async ({ page }) => 
     await expect(page).toHaveURL(/\/page_2$/)
 })
 
+test('short listing pages do not leave extra whitespace below the footer', async ({ page }) => {
+    await page.goto('/page_2', { waitUntil: 'networkidle' })
+
+    const metrics = await page.evaluate(() => {
+        const footer = document.querySelector('.site-footer')?.getBoundingClientRect()
+        return {
+            viewportHeight: window.innerHeight,
+            scrollHeight: document.documentElement.scrollHeight,
+            footerBottom: footer?.bottom ?? 0
+        }
+    })
+
+    expect(metrics.scrollHeight - metrics.viewportHeight).toBeLessThanOrEqual(8)
+    expect(metrics.footerBottom - metrics.viewportHeight).toBeLessThanOrEqual(8)
+})
+
 test('article page renders its title', async ({ page }) => {
     await page.goto('/posts/2020/helloworld.html')
 

@@ -1,5 +1,5 @@
 ---
-page: true
+layout: page
 title: 技术
 description: Tech
 aside: false
