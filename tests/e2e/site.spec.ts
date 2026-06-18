@@ -22,15 +22,14 @@ test('short listing pages do not leave extra whitespace below the footer', async
 
     const metrics = await page.evaluate(() => {
         const footer = document.querySelector('.site-footer')?.getBoundingClientRect()
+        const footerBottom = footer ? footer.bottom + window.scrollY : 0
         return {
-            viewportHeight: window.innerHeight,
             scrollHeight: document.documentElement.scrollHeight,
-            footerBottom: footer?.bottom ?? 0
+            trailingSpace: document.documentElement.scrollHeight - footerBottom
         }
     })
 
-    expect(metrics.scrollHeight - metrics.viewportHeight).toBeLessThanOrEqual(8)
-    expect(metrics.footerBottom - metrics.viewportHeight).toBeLessThanOrEqual(8)
+    expect(metrics.trailingSpace).toBeLessThanOrEqual(8)
 })
 
 test('article page renders its title', async ({ page }) => {

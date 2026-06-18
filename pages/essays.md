@@ -1,5 +1,6 @@
 ---
-layout: page
+page: true
+pageClass: listing-page
 title: 随笔
 description: Essays
 aside: false
